@@ -1,0 +1,45 @@
+header {
+    text-align: center;
+    font-size: 5vw;
+    background-color: blueviolet;
+    padding: 10px 0px;
+    margin: 0px;
+    color: aliceblue;
+    font-weight: 200;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    position: sticky;
+}
+
+.projects-container {
+    display: flex;
+    flex-direction: column; /* Align items vertically */
+    align-items: center; /* Center items horizontally */
+    gap: 2vw; /* Add space between project items */
+    margin: 4vw;
+}
+
+.project {
+    width: 40vw;
+    background-color: rgb(171, 184, 201);
+    font-size: 2vw;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 10px;
+    padding: 1vw; /* Add padding to ensure content is not touching edges */
+}
+
+.project img {
+    width: 25vw;
+}
+
+.project button {
+    font-size: 2vw;
+    padding: 1vw 1.5vw;
+    border-radius: 10px;
+    border: none;
+    background-color: hsl(210, 100%, 50%);
+    color: aliceblue;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 1vw;
+}
