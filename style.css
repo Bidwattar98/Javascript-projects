@@ -34,6 +34,7 @@ header {
 
 .project img {
     width: 25vw;
+    margin: 1vw;
 }
 
 .project button {
