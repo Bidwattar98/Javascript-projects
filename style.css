@@ -48,3 +48,22 @@ header {
     cursor: pointer;
     margin: 1vw;
 }
+
+.project button:hover{
+    background-color: white;
+    transition: 0.15s;
+    color: black;
+}
+
+@media(max-width: 700px){
+    .project{
+        width: 60vw;
+        height: 40vw;
+    }
+    .project img{
+        width: 40vw;
+    }
+    .project button{
+        font-size: 4vw;
+    }
+}
