@@ -61,7 +61,7 @@ button {
     transition: 0.3s;
 }
 
-button:hover {
+#start-quiz-btn:hover {
     background: #222;
     color: white;
 }
@@ -83,9 +83,13 @@ button:hover {
     transition: background-color 0.3s ease;
 }
 
-.btn:hover {
+.btn:hover:not([disabled]) {
     background: #222;
     color: white;
+}
+
+.btn:disabled{
+    cursor: no-drop;
 }
 
 .correct {
