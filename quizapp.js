@@ -1,114 +1,129 @@
-const questions = [
-    {
-        question: "Which is the largest animal in the world",
-        answers: [
-            {text: "shark", correct: false},
-            {text: "blue whate", correct: true},
-            {text: "elephant", correct: false},
-            {text: "giraffe", correct: false},
-        ]
-    },
-    {
-        question: "who has alwas got a plan",
-        answers: [
-            {text: "Micah", correct: false},
-            {text: "Dutch", correct: true},
-            {text: "Arthur", correct: false},
-            {text: "John", correct: false},
-        ]
-    },
-    {
-        question: "who will win 2024 world cup",
-        answers: [
-            {text: "India", correct: true},
-            {text: "England", correct: false},
-            {text: "Pakistan", correct: false},
-            {text: "South Africa", correct: false},
-        ]
-    }
-];
+const apiUrl = 'https://opentdb.com/api.php';
+const questionElement = document.getElementById("question");
+const answerButtons = document.getElementById("answerbuttons");
+const nextButton = document.getElementById("nextbtn");
+const startQuizButton = document.getElementById("start-quiz-btn");
+const quizSettingsForm = document.getElementById("quiz-settings");
 
-const questionelement = document.getElementById("question");
-const answerbutton = document.getElementById("answerbuttons");
-const nextbtn = document.getElementById("nextbtn");
-
-let currentquestionindex = 0;
+let currentQuestionIndex = 0;
 let score = 0;
-function startQuiz(){
-    currentquestionindex = 0;
-    score = 0;
-    nextbtn.innerHTML = "Next";
-    showquestion();
+let questions = [];
+let numberOfQuestions = 5; // Default number of questions
+
+async function fetchQuestions() {
+    const numQuestions = parseInt(document.getElementById("num-questions").value);
+    numberOfQuestions = numQuestions; // Update numberOfQuestions based on user input
+
+    const category = 9; // Example category for General Knowledge, you can change this
+    const difficulty = "medium"; // Example difficulty, you can change this
+
+    const url = `${apiUrl}?amount=${numQuestions}&category=${category}&difficulty=${difficulty}&type=multiple`;
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        questions = data.results.map(result => ({
+            question: result.question,
+            correct_answer: result.correct_answer,
+            incorrect_answers: result.incorrect_answers
+        }));
+        startQuiz();
+    } catch (error) {
+        console.error('Error fetching questions:', error);
+        alert('Failed to fetch questions. Please try again later.');
+    }
 }
 
-function showquestion(){
-    resetstate();
-    let currentquestion = questions[currentquestionindex];
-    let questionNo = currentquestionindex +1;
-    questionelement.innerHTML = questionNo + ". "+ currentquestion.question;
+function startQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    nextButton.innerHTML = "Next";
+    quizSettingsForm.style.display = "none";
+    showQuestion();
+}
 
-    currentquestion.answers.forEach(answer =>{
+function showQuestion() {
+    resetState();
+    let currentQuestion = questions[currentQuestionIndex];
+    let questionNo = currentQuestionIndex + 1;
+    questionElement.innerHTML = questionNo + ". " + decodeHtml(currentQuestion.question);
+
+    // Combine correct and incorrect answers for randomization
+    let answers = [...currentQuestion.incorrect_answers, currentQuestion.correct_answer];
+    answers = shuffleArray(answers);
+
+    answers.forEach(answer => {
         const button = document.createElement("button");
-        button.innerHTML = answer.text;
+        button.innerHTML = decodeHtml(answer);
         button.classList.add("btn");
-        answerbutton.appendChild(button);
-        if (answer.correct) {
-            button.dataset.correct = answer.correct;
+        if (answer === currentQuestion.correct_answer) {
+            button.dataset.correct = true;
         }
-        button.addEventListener("click", selectanswer);
+        button.addEventListener("click", selectAnswer);
+        answerButtons.appendChild(button);
     });
 }
 
-function resetstate(){
-    nextbtn.style.display = "none";
-    while (answerbutton.firstChild) {
-        answerbutton.removeChild(answerbutton.firstChild);
+function resetState() {
+    nextButton.style.display = "none";
+    while (answerButtons.firstChild) {
+        answerButtons.removeChild(answerButtons.firstChild);
     }
 }
 
-function selectanswer(e){
-    const selectedbutton = e.target;
-    const iscorrect = selectedbutton.dataset.correct === "true";
-    if (iscorrect) {
-        selectedbutton.classList.add("correct");
+function selectAnswer(e) {
+    const selectedButton = e.target;
+    const isCorrect = selectedButton.dataset.correct === "true";
+    if (isCorrect) {
+        selectedButton.classList.add("correct");
         score++;
+    } else {
+        selectedButton.classList.add("incorrect");
     }
-    else{
-        selectedbutton.classList.add("incorrect");
-    }
-    Array.from(answerbutton.children).forEach(button => {
+    Array.from(answerButtons.children).forEach(button => {
         if (button.dataset.correct === "true") {
             button.classList.add("correct");
         }
         button.disabled = true;
     });
-    nextbtn.style.display = "block";
+    nextButton.style.display = "block";
 }
 
-function showscore(){
-    resetstate();
-    questionelement.innerHTML = `Your score: ${score} out of ${questions.length}!`;
-    nextbtn.innerHTML = "Play again!";
-    nextbtn.style.display = "block";
+function showScore() {
+    resetState();
+    questionElement.innerHTML = `Your score: ${score} out of ${numberOfQuestions}!`;
+    nextButton.innerHTML = "Play again!";
+    nextButton.style.display = "block";
+    quizSettingsForm.style.display = "block";
 }
 
-function handlenextbutton(){
-    currentquestionindex++;
-    if(currentquestionindex < questions.length){
-        showquestion();
-    }
-    else{
-        showscore();
+function handleNextButton() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < numberOfQuestions) {
+        showQuestion();
+    } else {
+        showScore();
     }
 }
 
-nextbtn.addEventListener("click", () =>{
-    if(currentquestionindex < questions.length){
-        handlenextbutton();
-    }
-    else{
+nextButton.addEventListener("click", () => {
+    if (currentQuestionIndex < numberOfQuestions) {
+        handleNextButton();
+    } else {
         startQuiz();
     }
-})
+});
 
-startQuiz();
+startQuizButton.addEventListener("click", fetchQuestions);
+
+// Helper function to shuffle array
+function shuffleArray(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+// Helper function to decode HTML entities
+function decodeHtml(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+}

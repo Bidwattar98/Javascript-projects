@@ -1,15 +1,16 @@
-*{
+* {
     margin: 0;
     padding: 0;
-    font-family: 'Courier New', Courier, monospace;
+    font-family:'Times New Roman', Times, serif;
     box-sizing: border-box;
 }
 
-body{
+body {
     background: #001e4d;
+    
 }
 
-.app{
+.app {
     background-color: aliceblue;
     width: 90%;
     max-width: 600px;
@@ -18,7 +19,7 @@ body{
     padding: 30px;
 }
 
-.app h1{
+h1 {
     font-weight: 25px;
     color: #001e4d;
     font-weight: 600;
@@ -26,17 +27,27 @@ body{
     padding-bottom: 30px;
 }
 
-.quiz{
+.quiz {
     padding: 20px 0;
 }
 
-.quiz h2{
-    font-size: 18px;
-    color: #001e4d;
-    font-weight: 600;
+form {
+    margin-bottom: 20px;
 }
 
-.btn{
+label {
+    font-weight: bold;
+}
+
+input[type="number"] {
+    width: 60px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
     background-color: white;
     color: #222;
     font-weight: 500;
@@ -50,16 +61,44 @@ body{
     transition: 0.3s;
 }
 
-.btn:hover:not([disabled]){
+button:hover {
     background: #222;
     color: white;
 }
 
-.btn:disabled{
-    cursor: no-drop;
+#question {
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 
-#nextbtn{
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background: #222;
+    color: white;
+}
+
+.correct {
+    background: #9aeabc;
+    border-color: #c3e6cb;
+}
+
+.incorrect {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+#nextbtn {
     background: #001e4d;
     color: white;
     font-weight: 500;
@@ -70,12 +109,10 @@ body{
     border-radius: 4px;
     cursor: pointer;
     display: none;
+    text-align: center;
 }
 
-.correct{
-    background: #9aeabc;
+#nextbtn:hover {
+    background-color: #218838;
 }
 
-.incorrect{
-    background: #ff9393;
-}
