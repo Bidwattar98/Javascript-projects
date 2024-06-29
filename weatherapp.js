@@ -42,5 +42,5 @@ async function checkweather(city) {
 }
 searchbtn.addEventListener("click", ()=>{
     console.log("Button clicked");
-
+    checkweather(searchbox.value);
 });
